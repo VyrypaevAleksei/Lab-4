@@ -1,0 +1,62 @@
+#include<iostream>
+#include<vector>
+#include<string>
+
+std::string ones[] = { "", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять" };
+std::string teens[] = { "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать" };
+std::string tens[] = { "", "", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто" };
+std::string hundreds[] = { "", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот" };
+std::string thousands[] = { "", "одна тысяча", "две тысячи", "три ттысячи", "четыре тысячи", "пять тысяч",
+                           "шесть тысяч", "семь тысяч", "восемь тысяч", "девять тысяч",
+                           "десять тысяч", "одиннадцать тысяч", "двенадцать тысяч", "тринадцать тысяч", "четырнадцать тысяч",
+                           "пятнадцать тысяч", "шестнадцать тысяч", "семнадцать тысяч", "восемнадцать тысяч",
+                           "девятнадцать тысяч" };
+std::string tenThousands[] = { "", "", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто" };
+
+std::string convertToWords(int num) {
+    setlocale(LC_ALL, "Russian");
+    if (num >= 1 && num <= 9)
+        return ones[num];
+    else if (num >= 10 && num <= 19)
+        return teens[num - 10];
+    else if (num >= 20 && num <= 99)
+        return tens[num / 10] + (num % 10 != 0 ? " " + ones[num % 10] : "");
+    else if (num >= 100 && num <= 999)
+        return hundreds[num / 100] + (num % 100 != 0 ? " " + convertToWords(num % 100) : "");
+    else if (num >= 1000 && num <= 19999)
+        return thousands[num / 1000] + (num % 1000 != 0 ? " " + convertToWords(num % 1000) : "");
+    else if (num >= 20000 && num <= 99999)
+        return tenThousands[num / 10000] + (num % 10000 != 0 ? " " + convertToWords(num % 10000) : "");
+    else if (num >= 100000 && num <= 100000)
+        return "сто тысяч";
+    else
+        return "Выберите число меньше 100000";
+}
+
+std::string rubFormat(int n) {
+    setlocale(LC_ALL, "Russian");
+    n %= 100;
+    if (n > 10 && n < 20) return "рублей";
+    else {
+        n %= 10;
+        switch (n) {
+        case 1:
+            return "рубль";
+        case 2:
+        case 3:
+        case 4:
+            return "рубля";
+        default:
+            return "рублей";
+        }
+    }
+}
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    int n;
+    std::cout << "Введите сумму от 1 до 100000: ";
+    std::cin >> n;
+    std::cout << convertToWords(n) << " " << rubFormat(n) << "\n";
+    return 0;
+}
